@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <style>
+        div
+        {
+            display: inline-block;
+            width:100%;
+            height:355px;
+        }
+        p
+        {
+            height: 293px;
+    width: 33px;
+    float: right;
+    font-size: 41px;
+    margin-left: 145px;
+        }
+        #res
+        {
+            margin:0 auto;
+        }
+        div#res
+        {
+            width: 100%;
+    border: none;
+    height: 30px;
+    font-size: 27px;
+    color: white;
+    text-align: center;
+        }
+        span#wrong
+        {
+            color:red;
+            font-weight: bold;
+        }
+        span#right
+        {
+            color:black;
+            font-weight: bold;
+        }
+        .card:hover
+        {
+          filter:blur(0px);
+          transform:scale(1.1);
+          opacity: 1;
+        }
+        .card
+        {
+          transition: 0.5s;
+          width:29%;
+          overflow: auto;
+          border-color: rgb(157, 0, 248);
+        }
+        #res
+        {
+            margin-top: 24px;
+    line-height: 28px;
+        }
+        .hello
+        {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body class="container">
+    <h3>WELCOME</h3>
+        THE TARGET IS TO SHIFT THE NUMBER TOWER IN ONE OF OTHER BOX IN SAME FINAL ORDER AS IN 1 BOX<br>
+        RULE:<br>
+        1.THE SMALLER NUMBER CAN NOT BE PLACED ON LARGER NUMBER<br>
+        2.THE NUMBER ARE SHIFTED FROM TOP OF ONE TOWER TO TOP OF OTHER TOWER<br>
+        ENTER A POSITIVE NUMBER :
+        <input type="number" id="num" placeholder="<=6" min="1" max='6'>
+        <button class="btn btn-primary" onclick="play()">PLAY</button>
+        <br>
+        <div class="d-flex justify-content-around">
+    <div class="card" style="border-radius: 10px;box-shadow:2px 2px 15px 0 rgba(46,61,73,.4)" id='a'>
+        <div class="hello d-flex justify-content-around align-items-start">
+        <button class="btn btn-primary" onclick="pushba()">push to b</button>
+        <button class="btn btn-primary btn-success">A</button>
+        <button class="btn btn-primary" onclick="pushca()">push to c</button>
+    </div>
+        <p id='atext'></p>
+    </div>
+    <div class="card" style="border-radius: 10px;box-shadow:2px 2px 15px 0 rgba(46,61,73,.4)" id='b'>
+        <div class="hello d-flex justify-content-around align-items-start">
+        <button class="btn btn-primary" onclick="pushcb()">push to c</button>
+        <button class="btn btn-primary btn-success">B</button>
+        <button class="btn btn-primary" onclick="pushab()">push to a</button>
+        </div>
+        <p id='btext'></p>
+    </div>
+    <div class="card" style="border-radius: 10px;box-shadow:2px 2px 15px 0 rgba(46,61,73,.4)" id='c'>
+        <div class="hello d-flex justify-content-around align-items-start">
+        <button class="btn btn-primary" onclick="pushbc()">push to b</button>
+        <button class="btn btn-primary btn-success">C</button>
+        <button class="btn btn-primary" onclick="pushac()">push to a</button>
+    </div>
+        <p id='ctext'></p>
+    </div>
+        </div>
+    <div id='res'></div>
+    <span id='step'></span>
+    <script>
+        var a=[],b=[],c=[];
+        var z=document.getElementById('step');
+        function play()
+        {
+            var d=Number(document.getElementById('num').value);
+            for(var i=0;i<d;i++)
+           a[i]=i+1;
+           document.getElementById('atext').innerHTML='';
+           for(var i=a.length-1;i>=0;i--)
+           document.getElementById('atext').innerHTML+=a[i]+'<br>';
+        }
+        function pushba()
+        {
+            if(a[a.length-1]<b[b.length-1])
+            document.getElementById('res').innerHTML="invalid move",document.getElementById('res').style.background='red', z.innerHTML+='<span id="right">a---->b</span>';
+            else
+            {
+            b.push(a[a.length-1]);
+            document.getElementById('btext').innerHTML='';
+            for(var i=b.length-1;i>=0;i--)
+           document.getElementById('btext').innerHTML+=b[i]+'<br>';
+            a.pop();
+            document.getElementById('atext').innerHTML='';
+            for(var i=a.length-1;i>=0;i--)
+           document.getElementById('atext').innerHTML+=a[i]+'<br>';
+            document.getElementById('res').innerHTML="valid move";
+            document.getElementById('res').style.background='greenyellow';
+            z.innerHTML+='<span id="right">a---->b</span>';
+            }
+        }
+        function pushca()
+        {
+            if(a[a.length-1]<c[c.length-1])
+            document.getElementById('res').innerHTML="invalid move",document.getElementById('res').style.background='red', z.innerHTML+='<span id="wrong">b---->c</span>';
+            else
+            {
+            c.push(a[a.length-1]);
+            document.getElementById('ctext').innerHTML='';
+            for(var i=c.length-1;i>=0;i--)
+           document.getElementById('ctext').innerHTML+=c[i]+'<br>';
+            a.pop();
+            document.getElementById('atext').innerHTML='';
+            for(var i=a.length-1;i>=0;i--)
+           document.getElementById('atext').innerHTML+=a[i]+'<br>';
+            document.getElementById('res').innerHTML="valid move";
+            document.getElementById('res').style.background='greenyellow';
+            z.innerHTML+='<span id="right">a---->c</span>';
+            }
+        }
+        function pushcb()
+        {
+            if(b[b.length-1]<c[c.length-1])
+            document.getElementById('res').innerHTML="invalid move",document.getElementById('res').style.background='red', z.innerHTML+='<span id="wrong">b---->c</span>';
+            else
+            {
+            c.push(b[b.length-1]);
+            document.getElementById('ctext').innerHTML='';
+            for(var i=c.length-1;i>=0;i--)
+           document.getElementById('ctext').innerHTML+=c[i]+'<br>';
+            b.pop();
+            document.getElementById('btext').innerHTML='';
+            for(var i=b.length-1;i>=0;i--)
+           document.getElementById('btext').innerHTML+=b[i]+'<br>';
+            document.getElementById('res').innerHTML="valid move";
+            document.getElementById('res').style.background='greenyellow';
+            z.innerHTML+='<span id="right">b---->c</span>';
+            }
+        }
+        function pushab()
+        {
+            if(b[b.length-1]<a[a.length-1])
+            document.getElementById('res').innerHTML="invalid move",document.getElementById('res').style.background='red',z.innerHTML+='<span id="wrong">b---->a</span>';
+            else
+            {
+            a.push(b[b.length-1]);
+            document.getElementById('atext').innerHTML='';
+            for(var i=a.length-1;i>=0;i--)
+           document.getElementById('atext').innerHTML+=a[i]+'<br>';
+            b.pop();
+            document.getElementById('btext').innerHTML='';
+            for(var i=b.length-1;i>=0;i--)
+           document.getElementById('btext').innerHTML+=b[i]+'<br>';
+            document.getElementById('res').innerHTML="valid move";
+            document.getElementById('res').style.background='greenyellow';
+            z.innerHTML+='<span id="right">b---->a</span>';
+            }
+        }
+        function pushbc()
+        {
+            if(c[c.length-1]<b[b.length-1])
+            document.getElementById('res').innerHTML="invalid move",document.getElementById('res').style.background='red',z.innerHTML+='<span id="wrong">c---->b</span>';
+            else
+            {
+            b.push(c[c.length-1]);
+            document.getElementById('btext').innerHTML='';
+            for(var i=b.length-1;i>=0;i--)
+           document.getElementById('btext').innerHTML+=b[i]+'<br>';
+            c.pop();
+            document.getElementById('ctext').innerHTML='';
+            for(var i=c.length-1;i>=0;i--)
+           document.getElementById('ctext').innerHTML+=c[i]+'<br>';
+            document.getElementById('res').innerHTML="valid move";
+            document.getElementById('res').style.background='greenyellow';
+            z.innerHTML+='<span id="right">c---->b</span>';
+            }
+        }
+        function pushac()
+        {
+            if(c[c.length-1]<a[a.length-1])
+            document.getElementById('res').innerHTML="invalid move",document.getElementById('res').style.background='red',z.innerHTML+='<span id="wrong">c---->a</span>';
+            else
+            {
+            a.push(c[c.length-1]);
+            document.getElementById('atext').innerHTML='';
+            for(var i=a.length-1;i>=0;i--)
+           document.getElementById('atext').innerHTML+=a[i]+'<br>';
+            c.pop();
+            document.getElementById('ctext').innerHTML='';
+            for(var i=c.length-1;i>=0;i--)
+           document.getElementById('ctext').innerHTML+=c[i]+'<br>';
+            document.getElementById('res').innerHTML="valid move";
+            document.getElementById('res').style.background='greenyellow';
+            z.innerHTML+='<span id="right">c---->a</span>';
+            }
+        }
+    </script>
+</body>
+</html>
